@@ -1,0 +1,3 @@
+C:/Users/abmartinez/CLionProjects/ftpClient/cmake-build-debug/CMakeFiles/ftpClient.dir
+C:/Users/abmartinez/CLionProjects/ftpClient/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/abmartinez/CLionProjects/ftpClient/cmake-build-debug/CMakeFiles/rebuild_cache.dir
