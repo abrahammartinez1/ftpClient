@@ -10,6 +10,7 @@
 #define BUFFER_SIZE 1024
 
 void uploadFile(SOCKET sock, const char *filename);
+void deleteFile(SOCKET sock, const char *filename);
 
 int main() {
     WSADATA wsaData;
@@ -43,8 +44,26 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    // Subir un archivo
-    uploadFile(sock, "fichSubida.txt"); // Reemplaza con el path correcto
+    // Menú para elegir la acción
+    printf("Elige una acción:\n1. Subir un archivo\n2. Borrar un archivo\n");
+    int opcion;
+    scanf("%d", &opcion);
+    getchar(); // Limpiar el buffer del stdin
+
+    char filename[BUFFER_SIZE];
+    printf("Ingresa el nombre del archivo: ");
+    scanf("%s", filename);
+
+    switch(opcion) {
+        case 1:
+            uploadFile(sock, filename);
+            break;
+        case 2:
+            deleteFile(sock, filename);
+            break;
+        default:
+            printf("Opción no válida.\n");
+    }
 
     // Cerrar el socket
     closesocket(sock);
@@ -55,7 +74,7 @@ int main() {
 
 void uploadFile(SOCKET sock, const char *filename) {
     char buffer[BUFFER_SIZE];
-    FILE *file;
+    FILE *archivo;
     int bytesRead;
 
     // Enviar comando de subida
@@ -63,19 +82,32 @@ void uploadFile(SOCKET sock, const char *filename) {
     send(sock, buffer, strlen(buffer), 0);
 
     // Abrir el archivo
-    file = fopen(filename, "rb");
-    if (file == NULL) {
+    archivo = fopen(filename, "r"); // "r" es para leer ("read")
+
+    if (archivo == NULL) {
         perror("Error al abrir el archivo");
         return;
     }
 
     // Leer y enviar el contenido del archivo
-    while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, file)) > 0) {
+    while ((bytesRead = fread(buffer, 1, BUFFER_SIZE, archivo)) > 0) {
         send(sock, buffer, bytesRead, 0);
     }
 
     // Cerrar el archivo
-    fclose(file);
+    fclose(archivo);
+
+    // Leer la respuesta del servidor
+    recv(sock, buffer, BUFFER_SIZE, 0);
+    printf("Respuesta del servidor: %s\n", buffer);
+}
+
+void deleteFile(SOCKET sock, const char *filename) {
+    char buffer[BUFFER_SIZE];
+
+    // Enviar comando de borrado
+    sprintf(buffer, "R %s", filename);
+    send(sock, buffer, strlen(buffer), 0);
 
     // Leer la respuesta del servidor
     recv(sock, buffer, BUFFER_SIZE, 0);

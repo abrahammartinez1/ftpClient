@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/abmartinez/CLionProjects/ftpClient/cmake-build-debug",
-		"source" : "C:/Users/abmartinez/CLionProjects/ftpClient"
+		"build" : "C:/Users/abran/CLionProjects/ftpClient/cmake-build-debug",
+		"source" : "C:/Users/abran/CLionProjects/ftpClient"
 	},
 	"version" : 
 	{
